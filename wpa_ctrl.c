@@ -140,11 +140,8 @@ struct wpa_ctrl * wpa_ctrl_open(const char *ctrl_path)
 
 void wpa_ctrl_close(struct wpa_ctrl *ctrl)
 {
-	if (ctrl == NULL)
-		return;
 	unlink(ctrl->local.sun_path);
-	if (ctrl->s >= 0)
-		close(ctrl->s);
+	close(ctrl->s);
 	os_free(ctrl);
 }
 
@@ -156,7 +153,7 @@ void wpa_ctrl_close(struct wpa_ctrl *ctrl)
  * event of crashes that prevented them from being removed as part
  * of the normal orderly shutdown.
  */
-void wpa_ctrl_cleanup(void)
+void wpa_ctrl_cleanup()
 {
     DIR *dir;
     struct dirent entry;
@@ -190,7 +187,7 @@ void wpa_ctrl_cleanup(void)
 
 #else /* CONFIG_CTRL_IFACE_UNIX */
 #ifdef ANDROID
-void wpa_ctrl_cleanup(void)
+void wpa_ctrl_cleanup()
 {
 }
 #endif /* ANDROID */
@@ -295,11 +292,7 @@ int wpa_ctrl_request(struct wpa_ctrl *ctrl, const char *cmd, size_t cmd_len,
 	os_free(cmd_buf);
 
 	for (;;) {
-#ifdef ANDROID
-		tv.tv_sec = 10;
-#else
 		tv.tv_sec = 2;
-#endif
 		tv.tv_usec = 0;
 		FD_ZERO(&rfds);
 		FD_SET(ctrl->s, &rfds);

@@ -6,6 +6,8 @@ ifndef CFLAGS
 CFLAGS = -MMD -O2 -Wall -g
 endif
 
+CFLAGS += -DOPENSSL_NO_ENGINE
+
 # Include directories for CVS version
 CFLAGS += -I. -I../utils -I../hostapd
 

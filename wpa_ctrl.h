@@ -187,7 +187,7 @@ int wpa_ctrl_get_fd(struct wpa_ctrl *ctrl);
  * event of crashes that prevented them from being removed as part
  * of the normal orderly shutdown.
  */
-void wpa_ctrl_cleanup(void);
+void wpa_ctrl_cleanup();
 #endif  /* ANDROID */
 
 #ifdef CONFIG_CTRL_IFACE_UDP
